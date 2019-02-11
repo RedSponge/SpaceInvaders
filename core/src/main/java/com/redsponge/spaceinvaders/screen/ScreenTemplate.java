@@ -3,6 +3,7 @@ package com.redsponge.spaceinvaders.screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.redsponge.spaceinvaders.assets.Assets;
 import com.redsponge.spaceinvaders.utilities.DependencyInjection;
 
 import javax.inject.Inject;
@@ -14,6 +15,9 @@ public class ScreenTemplate extends ScreenAdapter {
 
     @Inject
     protected ShapeRenderer shapeRenderer;
+
+    @Inject
+    protected Assets assets;
 
     public ScreenTemplate(DependencyInjection di) {
         di.injectFields(this);

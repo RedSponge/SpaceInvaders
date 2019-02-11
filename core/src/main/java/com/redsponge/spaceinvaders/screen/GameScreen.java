@@ -1,10 +1,9 @@
 package com.redsponge.spaceinvaders.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.redsponge.spaceinvaders.game.Bullet;
 import com.redsponge.spaceinvaders.game.Enemy;
@@ -15,12 +14,16 @@ import com.redsponge.spaceinvaders.utilities.Constants;
 import com.redsponge.spaceinvaders.utilities.DependencyInjection;
 import com.redsponge.spaceinvaders.utilities.HashCollections;
 
-/** First screen of the application. Displayed after the application is created. */
+import java.util.Random;
+
 public class GameScreen extends ScreenTemplate {
 
     private FitViewport viewport;
     private Player player;
     private EnemyGroup enemyGroup;
+
+    private int cameraShakes;
+    private Random random;
 
     private HashCollections<Entity> entities;
 
@@ -29,15 +32,16 @@ public class GameScreen extends ScreenTemplate {
         entities = new HashCollections<Entity>();
         entities.addType(Enemy.class);
         entities.addType(Bullet.class);
+        cameraShakes = 0;
+        random = new Random();
     }
 
     @Override
     public void show() {
         viewport = new FitViewport(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-        player = new Player(this, entities);
+        player = new Player(this, entities, assets);
         entities.clearAll();
         enemyGroup = new EnemyGroup(entities);
-        //addEntity(new Enemy(new Vector2(200, 200)));
         enemyGroup.initGroup();
     }
 
@@ -58,16 +62,39 @@ public class GameScreen extends ScreenTemplate {
             }
         });
 
-        viewport.apply();
+        updateCameraAndViewport();
 
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
         batch.setProjectionMatrix(viewport.getCamera().combined);
+
 
         shapeRenderer.begin(ShapeType.Filled);
         player.render(batch, shapeRenderer);
 
         entities.forEach(e -> e.render(batch, shapeRenderer));
         shapeRenderer.end();
+        batch.begin();
+        assets.getParticles().render(delta, batch);
+        batch.end();
+    }
+
+    private void updateCameraAndViewport() {
+        if(cameraShakes > 0) {
+            int strength = 5;
+            float xAdj = random.nextInt(strength * 2) - strength;
+            float yAdj = random.nextInt(strength * 2) - strength;
+            viewport.getCamera().position.x += xAdj;
+            viewport.getCamera().position.y += yAdj;
+
+            viewport.apply();
+            cameraShakes--;
+        } else {
+            viewport.apply(true);
+        }
+    }
+
+    public void shakeCamera() {
+        cameraShakes = 5;
     }
 
     @Override
