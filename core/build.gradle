@@ -8,4 +8,4 @@ dependencies {
   compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
   compile "org.codejargon.feather:feather:1.0"
 }
-        
+

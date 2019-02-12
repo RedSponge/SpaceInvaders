@@ -3,6 +3,7 @@ package com.redsponge.spaceinvaders.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.redsponge.spaceinvaders.game.Bullet;
@@ -13,6 +14,7 @@ import com.redsponge.spaceinvaders.game.Player;
 import com.redsponge.spaceinvaders.utilities.Constants;
 import com.redsponge.spaceinvaders.utilities.DependencyInjection;
 import com.redsponge.spaceinvaders.utilities.HashCollections;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.util.Random;
 
@@ -26,6 +28,7 @@ public class GameScreen extends ScreenTemplate {
     private Random random;
 
     private HashCollections<Entity> entities;
+    private float offset;
 
     public GameScreen(DependencyInjection di) {
         super(di);
@@ -34,6 +37,7 @@ public class GameScreen extends ScreenTemplate {
         entities.addType(Bullet.class);
         cameraShakes = 0;
         random = new Random();
+        offset = 0;
     }
 
     @Override
@@ -43,6 +47,7 @@ public class GameScreen extends ScreenTemplate {
         entities.clearAll();
         enemyGroup = new EnemyGroup(entities);
         enemyGroup.initGroup();
+        offset = 0;
     }
 
     @Override
@@ -67,20 +72,45 @@ public class GameScreen extends ScreenTemplate {
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
         batch.setProjectionMatrix(viewport.getCamera().combined);
 
+        batch.begin();
+        renderSky();
+        batch.end();
 
         shapeRenderer.begin(ShapeType.Filled);
-        player.render(batch, shapeRenderer);
 
         entities.forEach(e -> e.render(batch, shapeRenderer));
         shapeRenderer.end();
+
         batch.begin();
+        player.render(batch, shapeRenderer);
         assets.getParticles().render(delta, batch);
         batch.end();
+
+        offset -= 1f;
+        offset %= assets.getTextures().sky.getRegionHeight();
+    }
+
+    private void renderSky() {
+        TextureRegion sky = assets.getTextures().sky;
+        for(int j = 0; j < Constants.GAME_HEIGHT / sky.getRegionHeight() + 1; j++) {
+            for(int i = 0; i < Constants.GAME_WIDTH / sky.getRegionWidth(); i++) {
+                float x = i * sky.getRegionWidth();
+                float y = j * sky.getRegionHeight() + offset;
+                boolean thing = false;
+                if(y + sky.getRegionHeight() < 0) {
+                    y = Constants.GAME_HEIGHT - y;
+                    thing = true;
+                }
+                if(thing)
+                    System.out.println(y);
+                batch.draw(sky, x, y);
+            }
+        }
     }
 
     private void updateCameraAndViewport() {
         if(cameraShakes > 0) {
-            int strength = 5;
+            int strength = 3;
             float xAdj = random.nextInt(strength * 2) - strength;
             float yAdj = random.nextInt(strength * 2) - strength;
             viewport.getCamera().position.x += xAdj;

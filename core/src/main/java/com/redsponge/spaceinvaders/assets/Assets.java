@@ -8,19 +8,23 @@ public class Assets implements Disposable {
     private AssetManager am;
     private Sounds sounds;
     private Particles particles;
+    private Textures textures;
 
     public Assets() {
         am = new AssetManager();
         particles = new Particles();
         sounds = new Sounds();
+        textures = new Textures();
 
         sounds.load(am);
         particles.load(am);
+        textures.load(am);
 
         am.finishLoading();
 
         sounds.getResources(am);
         particles.getResources(am);
+        textures.getResources(am);
     }
 
     public Sounds getSounds() {
@@ -29,6 +33,10 @@ public class Assets implements Disposable {
 
     public Particles getParticles() {
         return particles;
+    }
+
+    public Textures getTextures() {
+        return textures;
     }
 
     @Override

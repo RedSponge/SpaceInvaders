@@ -21,6 +21,7 @@ public class Player extends Entity {
     private float squashAnimationLength;
 
     private Assets assets;
+    private float timeSinceStart;
 
     public Player(GameScreen gameScreen, HashCollections<Entity> entities, Assets assets) {
         super(Constants.GAME_WIDTH / 2f - Constants.PLAYER_WIDTH / 2f, Constants.GAME_HEIGHT / 8f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
@@ -30,6 +31,7 @@ public class Player extends Entity {
         speed = Constants.PLAYER_SPEED;
         shootTime = 0;
         squashAnimationLength = 0.1f;
+        timeSinceStart = 0;
     }
 
     @Override
@@ -42,11 +44,13 @@ public class Player extends Entity {
         }
 
         if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+            if(TimeUtils.timeSinceNanos(shootTime) / 1000000000f > Constants.SHOOT_COOLDOWN_TIME)
             shootBullet();
         }
 
         if(position.x < 0) position.x = 0;
         if(position.x + bbWidth > Constants.GAME_WIDTH) position.x = Constants.GAME_WIDTH - bbWidth;
+        timeSinceStart += delta;
     }
 
     private void shootBullet() {
@@ -57,17 +61,6 @@ public class Player extends Entity {
 
     @Override
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        shapeRenderer.setColor(Color.WHITE);
-
-        Interpolation squash = Interpolation.exp5In;
-        float prog = (TimeUtils.timeSinceNanos(shootTime) / 1000000000f) / squashAnimationLength;
-        float alpha = 1 - squash.apply(prog);
-        float extraW = 0;
-        if(prog <= 1) {
-            System.out.println(alpha);
-            extraW = alpha * 10;
-        }
-
-        shapeRenderer.rect(position.x - extraW / 2, position.y, bbWidth + extraW, bbHeight);
+        batch.draw(assets.getTextures().spaceShipAnimation.getKeyFrame(timeSinceStart), position.x, position.y, bbWidth, bbHeight);
     }
 }

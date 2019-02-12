@@ -7,7 +7,7 @@ import com.redsponge.spaceinvaders.utilities.HashCollections;
 public class EnemyGroup {
 
     private HashCollections<Entity> entities;
-    private int speed;
+    private float speed;
     private float counter;
     private Vector2 position;
     private Vector2 movedFromAnchor;
@@ -15,7 +15,7 @@ public class EnemyGroup {
 
     public EnemyGroup(HashCollections<Entity> entities) {
         this.entities = entities;
-        speed = 1;
+        speed = 1.5f;
         counter = 0;
         position = new Vector2(Constants.ENEMY_SPACING_FROM_BORDER, Constants.GAME_HEIGHT - Constants.ENEMY_SPACING_FROM_BORDER - Constants.ENEMY_HEIGHT);
         movedFromAnchor = new Vector2(0, 0);
@@ -29,7 +29,6 @@ public class EnemyGroup {
         for(int i = 0; i < Constants.ENEMY_ROWS; i++) {
             for(int j = 0; j < Constants.ENEMY_COLS; j++) {
                 float x = position.x + wSpacing / 2 + (wSpacing + Constants.ENEMY_WIDTH) * j;
-                System.out.println(x);
                 float y = position.y - (Constants.ENEMY_ROW_SPACING + Constants.ENEMY_HEIGHT) * (i);
                 entities.add(new Enemy(new Vector2(x, y)));
             }
@@ -46,11 +45,10 @@ public class EnemyGroup {
 
     private void moveGroup() {
         Vector2 change = new Vector2();
-//        System.out.println(movedFromAnchor);
         if(movedFromAnchor.x > Constants.ENEMY_SPACING_FROM_BORDER && right || movedFromAnchor.x < -Constants.ENEMY_SPACING_FROM_BORDER && !right) {
             right = !right;
-            System.out.println("CHANGE! " + movedFromAnchor);
             change.y = -Constants.ENEMY_MOVE_SPEED;
+            speed -= 0.1f;
         } else {
             change.x = Constants.ENEMY_MOVE_SPEED * (right ? 1 : -1);
         }
