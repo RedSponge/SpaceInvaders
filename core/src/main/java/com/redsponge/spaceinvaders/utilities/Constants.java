@@ -17,4 +17,6 @@ public class Constants {
     public static final float PLAYER_ANIMATION_FRAME_DURATION = 0.1f;
 
     public static final float SHOOT_COOLDOWN_TIME = 0.5f;
+    public static final int ENEMY_ANIMATION_FRAMES = 2;
+    public static final float ENEMY_ANIMATION_FRAME_DURATION = 0.5f;
 }

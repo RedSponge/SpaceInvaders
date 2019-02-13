@@ -1,20 +1,19 @@
 package com.redsponge.spaceinvaders.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.redsponge.spaceinvaders.game.Bullet;
 import com.redsponge.spaceinvaders.game.Enemy;
+import com.redsponge.spaceinvaders.game.EnemyBullet;
 import com.redsponge.spaceinvaders.game.EnemyGroup;
 import com.redsponge.spaceinvaders.game.Entity;
 import com.redsponge.spaceinvaders.game.Player;
 import com.redsponge.spaceinvaders.utilities.Constants;
 import com.redsponge.spaceinvaders.utilities.DependencyInjection;
 import com.redsponge.spaceinvaders.utilities.HashCollections;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.util.Random;
 
@@ -35,6 +34,7 @@ public class GameScreen extends ScreenTemplate {
         entities = new HashCollections<Entity>();
         entities.addType(Enemy.class);
         entities.addType(Bullet.class);
+        entities.addType(EnemyBullet.class);
         cameraShakes = 0;
         random = new Random();
         offset = 0;
@@ -45,7 +45,7 @@ public class GameScreen extends ScreenTemplate {
         viewport = new FitViewport(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         player = new Player(this, entities, assets);
         entities.clearAll();
-        enemyGroup = new EnemyGroup(entities);
+        enemyGroup = new EnemyGroup(entities, assets, this);
         enemyGroup.initGroup();
         offset = 0;
     }
@@ -74,16 +74,10 @@ public class GameScreen extends ScreenTemplate {
 
         batch.begin();
         renderSky();
-        batch.end();
-
-        shapeRenderer.begin(ShapeType.Filled);
-
-        entities.forEach(e -> e.render(batch, shapeRenderer));
-        shapeRenderer.end();
-
-        batch.begin();
         player.render(batch, shapeRenderer);
+        entities.forEach(e -> e.render(batch, shapeRenderer));
         assets.getParticles().render(delta, batch);
+
         batch.end();
 
         offset -= 1f;

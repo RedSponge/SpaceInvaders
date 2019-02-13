@@ -7,12 +7,16 @@ import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.redsponge.spaceinvaders.game.Enemy;
 import com.redsponge.spaceinvaders.utilities.Constants;
 
 public class Textures implements AssetLoader {
 
     public Animation<TextureRegion> spaceShipAnimation;
+    public Animation<TextureRegion> enemyAnimation;
     public TextureRegion sky;
+    public TextureRegion bullet;
 
     @Override
     public void load(AssetManager am) {
@@ -29,8 +33,15 @@ public class Textures implements AssetLoader {
         for(int i = 0; i < Constants.PLAYER_ANIMATION_FRAMES; i++) {
             frames.add(atlas.findRegion("spaceship" + (i + 1)));
         }
-
         spaceShipAnimation = new Animation<TextureRegion>(Constants.PLAYER_ANIMATION_FRAME_DURATION, frames, PlayMode.LOOP);
+
+        Array<TextureRegion> enemyFrames = new Array<>();
+        for(int i = 0; i < Constants.ENEMY_ANIMATION_FRAMES; i++) {
+            enemyFrames.add(atlas.findRegion("enemy" + (i + 1)));
+        }
+        enemyAnimation = new Animation<TextureRegion>(Constants.ENEMY_ANIMATION_FRAME_DURATION, enemyFrames, PlayMode.LOOP);
+
         sky = atlas.findRegion("sky");
+        bullet = atlas.findRegion("bullet");
     }
 }

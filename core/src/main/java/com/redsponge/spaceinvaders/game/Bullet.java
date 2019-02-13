@@ -44,7 +44,6 @@ public class Bullet extends Entity {
 
     @Override
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(position.x, position.y, bbWidth, bbHeight);
+        batch.draw(assets.getTextures().bullet, position.x, position.y, bbWidth, bbHeight);
     }
 }

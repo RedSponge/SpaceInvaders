@@ -1,6 +1,8 @@
 package com.redsponge.spaceinvaders.game;
 
 import com.badlogic.gdx.math.Vector2;
+import com.redsponge.spaceinvaders.assets.Assets;
+import com.redsponge.spaceinvaders.screen.GameScreen;
 import com.redsponge.spaceinvaders.utilities.Constants;
 import com.redsponge.spaceinvaders.utilities.HashCollections;
 
@@ -12,9 +14,13 @@ public class EnemyGroup {
     private Vector2 position;
     private Vector2 movedFromAnchor;
     private boolean right;
+    private Assets assets;
+    private GameScreen gameScreen;
 
-    public EnemyGroup(HashCollections<Entity> entities) {
+    public EnemyGroup(HashCollections<Entity> entities, Assets assets, GameScreen gameScreen) {
         this.entities = entities;
+        this.assets = assets;
+        this.gameScreen = gameScreen;
         speed = 1.5f;
         counter = 0;
         position = new Vector2(Constants.ENEMY_SPACING_FROM_BORDER, Constants.GAME_HEIGHT - Constants.ENEMY_SPACING_FROM_BORDER - Constants.ENEMY_HEIGHT);
@@ -30,7 +36,7 @@ public class EnemyGroup {
             for(int j = 0; j < Constants.ENEMY_COLS; j++) {
                 float x = position.x + wSpacing / 2 + (wSpacing + Constants.ENEMY_WIDTH) * j;
                 float y = position.y - (Constants.ENEMY_ROW_SPACING + Constants.ENEMY_HEIGHT) * (i);
-                entities.add(new Enemy(new Vector2(x, y)));
+                entities.add(new Enemy(new Vector2(x, y), assets, gameScreen));
             }
         }
     }
