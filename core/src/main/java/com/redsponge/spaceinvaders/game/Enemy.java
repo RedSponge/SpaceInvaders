@@ -26,7 +26,8 @@ public class Enemy extends Entity {
 
     @Override
     protected void tick(float delta) {
-//        if(true) return;
+        if(true) return;
+
         counter += delta;
         if(counter > 1) {
             Gdx.app.log("Enemy", "Spawning Bullet!");

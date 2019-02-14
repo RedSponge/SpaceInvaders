@@ -1,6 +1,7 @@
 package com.redsponge.spaceinvaders.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,6 +21,8 @@ import java.util.Random;
 public class GameScreen extends ScreenTemplate {
 
     private FitViewport viewport;
+    private FitViewport scoreViewport;
+
     private Player player;
     private EnemyGroup enemyGroup;
 
@@ -28,6 +31,7 @@ public class GameScreen extends ScreenTemplate {
 
     private HashCollections<Entity> entities;
     private float offset;
+    private int score;
 
     public GameScreen(DependencyInjection di) {
         super(di);
@@ -38,11 +42,14 @@ public class GameScreen extends ScreenTemplate {
         cameraShakes = 0;
         random = new Random();
         offset = 0;
+        score = 0;
     }
 
     @Override
     public void show() {
         viewport = new FitViewport(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+        scoreViewport = new FitViewport(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+
         player = new Player(this, entities, assets);
         entities.clearAll();
         enemyGroup = new EnemyGroup(entities, assets, this);
@@ -82,6 +89,15 @@ public class GameScreen extends ScreenTemplate {
 
         offset -= 1f;
         offset %= assets.getTextures().sky.getRegionHeight();
+
+        scoreViewport.apply();
+        batch.setProjectionMatrix(scoreViewport.getCamera().combined);
+
+        batch.begin();
+        assets.getFonts().scoreFont.setColor(Color.WHITE);
+        assets.getFonts().scoreFont.draw(batch, "Score: " + score, 10, 20);
+        batch.end();
+
     }
 
     private void renderSky() {
@@ -124,6 +140,15 @@ public class GameScreen extends ScreenTemplate {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
+        scoreViewport.update(width, height, true);
+    }
+
+    public void addToScore(int add) {
+        this.score += add;
+        if(this.score % 500 == 0) {
+            assets.getParticles().star.spawn(player.getCenteredPosition(), this.score / 10);
+            assets.getSounds().reachGoodScore.play(0.5f, 1 + ((this.score / 500f - 1) / 10f), 0);
+        }
     }
 
     @Override

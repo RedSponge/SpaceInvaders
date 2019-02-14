@@ -52,7 +52,14 @@ public abstract class Entity {
         return dead;
     }
 
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public Vector2 getCenteredPosition() {
+        return new Vector2(position.x + bbWidth / 2, position.y + bbHeight / 2);
+    }
+
     protected abstract void tick(float delta);
     public abstract void render(SpriteBatch batch, ShapeRenderer shapeRenderer);
-
 }

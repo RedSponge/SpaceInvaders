@@ -34,6 +34,7 @@ public class Bullet extends Entity {
                 gameScreen.shakeCamera();
                 assets.getSounds().enemyHit.play(0.5f, 1 + (float) (Math.random() * 0.5f) - 0.25f, 0);
                 assets.getParticles().enemyDeath.spawn(position);
+                gameScreen.addToScore(100);
             }
         }
 

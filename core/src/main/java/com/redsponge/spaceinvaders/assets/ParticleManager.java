@@ -46,10 +46,19 @@ public class ParticleManager implements AssetLoader {
         }
     }
 
-    public void spawn(Vector2 pos) {
+    public PooledEffect spawn(Vector2 pos) {
+        return spawn(pos, -1);
+    }
+
+    public PooledEffect spawn(Vector2 pos, int duration) {
         PooledEffect p = pool.obtain();
         p.setPosition(pos.x,pos.y);
+        if(duration != -1) {
+            p.setDuration(duration);
+        }
         p.start();
         spawned.add(p);
+
+        return p;
     }
 }

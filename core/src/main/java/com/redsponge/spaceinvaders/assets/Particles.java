@@ -7,24 +7,29 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Particles implements AssetLoader {
 
     public ParticleManager enemyDeath;
+    public ParticleManager star;
 
     public Particles() {
         this.enemyDeath = new ParticleManager("enemyDeath.p");
+        this.star = new ParticleManager("starParticles.p");
     }
 
     @Override
     public void load(AssetManager am) {
         Gdx.app.log("Particles", "Loading Particles");
-        enemyDeath.load(am);
+        this.enemyDeath.load(am);
+        this.star.load(am);
     }
 
     @Override
     public void getResources(AssetManager am) {
         Gdx.app.log("Particles", "Retrieving Particles");
-        enemyDeath.getResources(am);
+        this.enemyDeath.getResources(am);
+        this.star.getResources(am);
     }
 
     public void render(float delta, SpriteBatch batch) {
-        enemyDeath.render(delta, batch);
+        this.enemyDeath.render(delta, batch);
+        this.star.render(delta, batch);
     }
 }
