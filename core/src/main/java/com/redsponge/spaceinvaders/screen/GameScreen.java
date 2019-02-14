@@ -83,9 +83,8 @@ public class GameScreen extends ScreenTemplate {
         renderSky();
         player.render(batch, shapeRenderer);
         entities.forEach(e -> e.render(batch, shapeRenderer));
-        assets.getParticles().render(delta, batch);
 
-        batch.end();
+        assets.getParticles().render(delta, batch);
 
         offset -= 1f;
         offset %= assets.getTextures().sky.getRegionHeight();
@@ -93,7 +92,6 @@ public class GameScreen extends ScreenTemplate {
         scoreViewport.apply();
         batch.setProjectionMatrix(scoreViewport.getCamera().combined);
 
-        batch.begin();
         assets.getFonts().scoreFont.setColor(Color.WHITE);
         assets.getFonts().scoreFont.draw(batch, "Score: " + score, 10, 20);
         batch.end();
@@ -106,13 +104,9 @@ public class GameScreen extends ScreenTemplate {
             for(int i = 0; i < Constants.GAME_WIDTH / sky.getRegionWidth(); i++) {
                 float x = i * sky.getRegionWidth();
                 float y = j * sky.getRegionHeight() + offset;
-                boolean thing = false;
                 if(y + sky.getRegionHeight() < 0) {
                     y = Constants.GAME_HEIGHT - y;
-                    thing = true;
                 }
-                if(thing)
-                    System.out.println(y);
                 batch.draw(sky, x, y);
             }
         }

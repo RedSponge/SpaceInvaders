@@ -31,7 +31,6 @@ public class EnemyGroup {
     public void initGroup() {
         float width = Constants.GAME_WIDTH - Constants.ENEMY_SPACING_FROM_BORDER * 2;
         float wSpacing = (width - Constants.ENEMY_WIDTH * Constants.ENEMY_COLS) / Constants.ENEMY_COLS;
-        System.out.println(wSpacing);
         for(int i = 0; i < Constants.ENEMY_ROWS; i++) {
             for(int j = 0; j < Constants.ENEMY_COLS; j++) {
                 float x = position.x + wSpacing / 2 + (wSpacing + Constants.ENEMY_WIDTH) * j;

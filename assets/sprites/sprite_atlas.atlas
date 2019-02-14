@@ -1,26 +1,26 @@
 
-myatlas.png
-size: 128,64
+sprite_atlas.png
+size: 256,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 bullet
   rotate: false
-  xy: 118, 51
+  xy: 52, 29
   size: 5, 5
   orig: 5, 5
   offset: 0, 0
   index: -1
 enemy1
   rotate: false
-  xy: 2, 2
+  xy: 132, 102
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 enemy2
   rotate: false
-  xy: 52, 36
+  xy: 2, 2
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
@@ -34,29 +34,36 @@ sky
   index: -1
 spaceship1
   rotate: false
-  xy: 24, 2
+  xy: 52, 36
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 spaceship2
   rotate: false
-  xy: 74, 36
+  xy: 132, 80
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 spaceship3
   rotate: false
-  xy: 96, 36
+  xy: 154, 102
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 spaceship4
   rotate: false
-  xy: 52, 14
+  xy: 24, 2
   size: 20, 20
   orig: 20, 20
+  offset: 0, 0
+  index: -1
+title
+  rotate: false
+  xy: 2, 58
+  size: 128, 64
+  orig: 128, 64
   offset: 0, 0
   index: -1

@@ -2,6 +2,7 @@ package com.redsponge.spaceinvaders.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -17,17 +18,18 @@ public class Textures implements AssetLoader {
     public Animation<TextureRegion> enemyAnimation;
     public TextureRegion sky;
     public TextureRegion bullet;
+    public TextureRegion title;
 
     @Override
     public void load(AssetManager am) {
         Gdx.app.debug("Textures", "Loading Textures!");
-        am.load("sprites/myatlas.atlas", TextureAtlas.class);
+        am.load("sprites/sprite_atlas.atlas", TextureAtlas.class);
     }
 
     @Override
     public void getResources(AssetManager am) {
         Gdx.app.debug("Textures", "Retrieving Textures!");
-        TextureAtlas atlas = am.get("sprites/myatlas.atlas");
+        TextureAtlas atlas = am.get("sprites/sprite_atlas.atlas");
 
         Array<TextureRegion> frames = new Array<>();
         for(int i = 0; i < Constants.PLAYER_ANIMATION_FRAMES; i++) {
@@ -43,5 +45,6 @@ public class Textures implements AssetLoader {
 
         sky = atlas.findRegion("sky");
         bullet = atlas.findRegion("bullet");
+        title = atlas.findRegion("title");
     }
 }

@@ -1,0 +1,20 @@
+
+particle_atlas.png
+size: 64,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+simple8x8
+  rotate: false
+  xy: 2, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+star32x32
+  rotate: false
+  xy: 2, 12
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1

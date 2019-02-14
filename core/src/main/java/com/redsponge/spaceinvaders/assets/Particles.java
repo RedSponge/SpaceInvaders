@@ -2,7 +2,10 @@ package com.redsponge.spaceinvaders.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader.ParticleEffectLoadParameter;
 
 public class Particles implements AssetLoader {
 
@@ -17,15 +20,15 @@ public class Particles implements AssetLoader {
     @Override
     public void load(AssetManager am) {
         Gdx.app.log("Particles", "Loading Particles");
-        this.enemyDeath.load(am);
-        this.star.load(am);
+        am.load("particles/particle_atlas.atlas", TextureAtlas.class);
     }
 
     @Override
     public void getResources(AssetManager am) {
         Gdx.app.log("Particles", "Retrieving Particles");
-        this.enemyDeath.getResources(am);
-        this.star.getResources(am);
+        TextureAtlas atlas = am.get("particles/particle_atlas.atlas");
+        this.enemyDeath.getResources(atlas);
+        this.star.getResources(atlas);
     }
 
     public void render(float delta, SpriteBatch batch) {
