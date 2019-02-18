@@ -35,7 +35,7 @@ public class EnemyGroup {
             for(int j = 0; j < Constants.ENEMY_COLS; j++) {
                 float x = position.x + wSpacing / 2 + (wSpacing + Constants.ENEMY_WIDTH) * j;
                 float y = position.y - (Constants.ENEMY_ROW_SPACING + Constants.ENEMY_HEIGHT) * (i);
-                entities.add(new Enemy(new Vector2(x, y), assets, gameScreen));
+                entities.add(new Enemy(new Vector2(x, y), assets));
             }
         }
     }

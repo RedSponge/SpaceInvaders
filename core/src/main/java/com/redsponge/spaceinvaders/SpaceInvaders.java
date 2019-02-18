@@ -1,34 +1,22 @@
 package com.redsponge.spaceinvaders;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
+import com.redsponge.spaceinvaders.screen.GameAccessor;
 import com.redsponge.spaceinvaders.screen.GameScreen;
-import com.redsponge.spaceinvaders.screen.MenuScreen;
+import com.redsponge.spaceinvaders.screen.SplashScreenScreen;
 import com.redsponge.spaceinvaders.utilities.DependencyInjection;
-
-import java.lang.reflect.InvocationTargetException;
 
 public class SpaceInvaders extends Game {
 
     private DependencyInjection di;
-    private static SpaceInvaders instance;
-
-    public static void transitionToScreen(Class<? extends Screen> screen) {
-        try {
-            Screen s = screen.getConstructor(DependencyInjection.class).newInstance(instance.di);
-            instance.setScreen(s);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-    }
+    private GameAccessor ga;
 
     @Override
     public void create() {
-        instance = this;
-
-
         di = new DependencyInjection();
-        setScreen(new MenuScreen(di));
+        ga = new GameAccessor(this, di);
+
+        setScreen(new SplashScreenScreen(di, ga));
     }
 
     @Override

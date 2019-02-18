@@ -5,6 +5,9 @@ buildscript {
     jcenter()
     google()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    flatDir {
+      dirs 'libs'
+    }
   }
   dependencies {
     classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"

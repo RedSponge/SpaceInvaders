@@ -4,6 +4,13 @@ size: 64,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+100_score
+  rotate: false
+  xy: 36, 40
+  size: 10, 4
+  orig: 10, 4
+  offset: 0, 0
+  index: -1
 simple8x8
   rotate: false
   xy: 2, 2

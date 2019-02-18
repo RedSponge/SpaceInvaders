@@ -3,12 +3,10 @@ package com.redsponge.spaceinvaders.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.redsponge.spaceinvaders.game.Bullet;
 import com.redsponge.spaceinvaders.game.Enemy;
-import com.redsponge.spaceinvaders.game.EnemyBullet;
 import com.redsponge.spaceinvaders.game.EnemyGroup;
 import com.redsponge.spaceinvaders.game.Entity;
 import com.redsponge.spaceinvaders.game.Player;
@@ -18,7 +16,7 @@ import com.redsponge.spaceinvaders.utilities.HashCollections;
 
 import java.util.Random;
 
-public class GameScreen extends ScreenTemplate {
+public class GameScreen extends AbstractScreen {
 
     private FitViewport viewport;
     private FitViewport scoreViewport;
@@ -33,12 +31,11 @@ public class GameScreen extends ScreenTemplate {
     private float offset;
     private int score;
 
-    public GameScreen(DependencyInjection di) {
-        super(di);
+    public GameScreen(DependencyInjection di, GameAccessor ga) {
+        super(di, ga);
         entities = new HashCollections<Entity>();
         entities.addType(Enemy.class);
         entities.addType(Bullet.class);
-        entities.addType(EnemyBullet.class);
         cameraShakes = 0;
         random = new Random();
         offset = 0;
@@ -55,12 +52,11 @@ public class GameScreen extends ScreenTemplate {
         enemyGroup = new EnemyGroup(entities, assets, this);
         enemyGroup.initGroup();
         offset = 0;
+        score = 0;
     }
 
     @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    public void tick(float delta) {
 
         player.update(delta);
         enemyGroup.update(delta);
@@ -73,6 +69,12 @@ public class GameScreen extends ScreenTemplate {
                 entities.remove(e);
             }
         });
+    }
+
+    @Override
+    public void render() {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         updateCameraAndViewport();
 
@@ -84,7 +86,7 @@ public class GameScreen extends ScreenTemplate {
         player.render(batch, shapeRenderer);
         entities.forEach(e -> e.render(batch, shapeRenderer));
 
-        assets.getParticles().render(delta, batch);
+        assets.getParticles().render(Gdx.graphics.getDeltaTime(), batch);
 
         offset -= 1f;
         offset %= assets.getTextures().sky.getRegionHeight();
@@ -95,7 +97,6 @@ public class GameScreen extends ScreenTemplate {
         assets.getFonts().scoreFont.setColor(Color.WHITE);
         assets.getFonts().scoreFont.draw(batch, "Score: " + score, 10, 20);
         batch.end();
-
     }
 
     private void renderSky() {

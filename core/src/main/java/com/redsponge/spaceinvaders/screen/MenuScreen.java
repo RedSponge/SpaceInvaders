@@ -3,32 +3,29 @@ package com.redsponge.spaceinvaders.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.redsponge.spaceinvaders.SpaceInvaders;
+import com.redsponge.spaceinvaders.game.Enemy;
+import com.redsponge.spaceinvaders.transitions.TransitionFade;
 import com.redsponge.spaceinvaders.utilities.Constants;
 import com.redsponge.spaceinvaders.utilities.DependencyInjection;
 
-public class MenuScreen extends ScreenTemplate {
+public class MenuScreen extends AbstractScreen {
 
     private Stage stage;
     private FitViewport viewport;
+    private Enemy enemy;
+    private double counter;
 
-    public MenuScreen(DependencyInjection di) {
-        super(di);
+    public MenuScreen(DependencyInjection di, GameAccessor ga) {
+        super(di, ga);
     }
 
     @Override
@@ -38,19 +35,18 @@ public class MenuScreen extends ScreenTemplate {
 
         Table buttonTable = new Table(assets.getSkins().neon);
         buttonTable.setFillParent(true);
-        buttonTable.setDebug(true);
         buttonTable.bottom();
 
         Image title = new Image(assets.getTextures().title);
-        buttonTable.add(title).width(256).height(128).grow().center();
+        title.getColor().a = 0;
+        buttonTable.add(title).width(256*2).height(128*2).grow().center();
         buttonTable.row();
-//        title.moveBy(-100, 0);
 
         TextButton play = new TextButton("Start Game", assets.getSkins().neon);
         play.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SpaceInvaders.transitionToScreen(GameScreen.class);
+                ga.transitionTo(new GameScreen(di, ga), new TransitionFade(), 5);
             }
         });
 
@@ -99,20 +95,38 @@ public class MenuScreen extends ScreenTemplate {
         buttonTable.row();
         buttonTable.add(exit).pad(pad);
         exit.addAction(Actions.delay(delay * 3, Actions.fadeIn(fadeInSpeed, interpolation)));
-
+        title.addAction(Actions.delay(delay * 4, Actions.fadeIn(fadeInSpeed * 2, interpolation)));
 
         stage.addActor(buttonTable);
 
         Gdx.input.setInputProcessor(stage);
+
+        enemy = new Enemy(new Vector2(viewport.getWorldWidth() / 4 * 3, viewport.getWorldHeight() / 4 * 3), assets);
+        counter = 0;
     }
 
     @Override
-    public void render(float delta) {
+    public void tick(float delta) {
+        counter += delta;
+        stage.act(delta);
+    }
+
+    @Override
+    public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(delta);
+        viewport.apply();
         stage.draw();
+
+        batch.begin();
+        enemy.getPosition().y = (float) (viewport.getWorldHeight() / 4 * 2.5 + Math.sin(counter) * 15);
+        enemy.render(batch, shapeRenderer);
+        batch.end();
+    }
+
+    @Override
+    public void hide() {
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override

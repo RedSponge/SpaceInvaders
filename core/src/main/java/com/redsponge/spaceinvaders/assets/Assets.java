@@ -11,6 +11,7 @@ public class Assets implements Disposable {
     private Textures textures;
     private Fonts fonts;
     private Skins skins;
+    private Shaders shaders;
 
     public Assets() {
         am = new AssetManager();
@@ -19,12 +20,14 @@ public class Assets implements Disposable {
         textures = new Textures();
         fonts = new Fonts();
         skins = new Skins();
+        shaders = new Shaders();
 
         sounds.load(am);
         particles.load(am);
         textures.load(am);
         fonts.load(am);
         skins.load(am);
+        shaders.load(am);
 
         am.finishLoading();
 
@@ -33,6 +36,7 @@ public class Assets implements Disposable {
         textures.getResources(am);
         fonts.getResources(am);
         skins.getResources(am);
+        shaders.getResources(am);
     }
 
     public Sounds getSounds() {
@@ -55,9 +59,14 @@ public class Assets implements Disposable {
         return skins;
     }
 
+    public Shaders getShaders() {
+        return shaders;
+    }
+
     @Override
     public void dispose() {
         am.dispose();
         fonts.dispose();
+        shaders.dispose();
     }
 }
