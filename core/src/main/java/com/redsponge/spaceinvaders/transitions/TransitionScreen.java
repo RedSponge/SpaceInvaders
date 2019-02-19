@@ -6,7 +6,6 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.redsponge.spaceinvaders.screen.AbstractScreen;
 import com.redsponge.spaceinvaders.screen.GameAccessor;
-import com.redsponge.spaceinvaders.utilities.DependencyInjection;
 
 public class TransitionScreen extends AbstractScreen {
 
@@ -18,8 +17,8 @@ public class TransitionScreen extends AbstractScreen {
     private Transition transition;
     private boolean initiated;
 
-    public TransitionScreen(DependencyInjection di, AbstractScreen from, AbstractScreen to, float transitionLength, GameAccessor ga, Transition transition) {
-        super(di, ga);
+    public TransitionScreen(AbstractScreen from, AbstractScreen to, float transitionLength, GameAccessor ga, Transition transition) {
+        super(ga);
         this.from = from;
         this.to = to;
         this.transitionLength = transitionLength;

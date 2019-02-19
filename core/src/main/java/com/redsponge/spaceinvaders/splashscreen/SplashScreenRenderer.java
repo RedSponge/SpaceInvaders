@@ -82,6 +82,7 @@ public class SplashScreenRenderer implements Disposable {
 
         if(icon.getActions().size == 0) {
             complete = true;
+            am.dispose();
         }
     }
 

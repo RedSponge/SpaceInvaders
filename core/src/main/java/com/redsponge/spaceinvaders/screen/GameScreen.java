@@ -11,7 +11,6 @@ import com.redsponge.spaceinvaders.game.EnemyGroup;
 import com.redsponge.spaceinvaders.game.Entity;
 import com.redsponge.spaceinvaders.game.Player;
 import com.redsponge.spaceinvaders.utilities.Constants;
-import com.redsponge.spaceinvaders.utilities.DependencyInjection;
 import com.redsponge.spaceinvaders.utilities.HashCollections;
 
 import java.util.Random;
@@ -31,8 +30,8 @@ public class GameScreen extends AbstractScreen {
     private float offset;
     private int score;
 
-    public GameScreen(DependencyInjection di, GameAccessor ga) {
-        super(di, ga);
+    public GameScreen(GameAccessor ga) {
+        super(ga);
         entities = new HashCollections<Entity>();
         entities.addType(Enemy.class);
         entities.addType(Bullet.class);

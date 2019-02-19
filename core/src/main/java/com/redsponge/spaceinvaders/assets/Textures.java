@@ -22,13 +22,13 @@ public class Textures implements AssetLoader {
 
     @Override
     public void load(AssetManager am) {
-        Gdx.app.debug("Textures", "Loading Textures!");
+        Gdx.app.log("Textures", "Loading Textures!");
         am.load("sprites/sprite_atlas.atlas", TextureAtlas.class);
     }
 
     @Override
     public void getResources(AssetManager am) {
-        Gdx.app.debug("Textures", "Retrieving Textures!");
+        Gdx.app.log("Textures", "Retrieving Textures!");
         TextureAtlas atlas = am.get("sprites/sprite_atlas.atlas");
 
         Array<TextureRegion> frames = new Array<>();

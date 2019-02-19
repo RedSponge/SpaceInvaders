@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.redsponge.spaceinvaders.game.Enemy;
 import com.redsponge.spaceinvaders.transitions.TransitionFade;
 import com.redsponge.spaceinvaders.utilities.Constants;
-import com.redsponge.spaceinvaders.utilities.DependencyInjection;
 
 public class MenuScreen extends AbstractScreen {
 
@@ -24,8 +23,8 @@ public class MenuScreen extends AbstractScreen {
     private Enemy enemy;
     private double counter;
 
-    public MenuScreen(DependencyInjection di, GameAccessor ga) {
-        super(di, ga);
+    public MenuScreen(GameAccessor ga) {
+        super(ga);
     }
 
     @Override
@@ -46,7 +45,7 @@ public class MenuScreen extends AbstractScreen {
         play.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ga.transitionTo(new GameScreen(di, ga), new TransitionFade(), 5);
+                ga.transitionTo(new GameScreen(ga), new TransitionFade(), 5);
             }
         });
 
@@ -101,7 +100,7 @@ public class MenuScreen extends AbstractScreen {
 
         Gdx.input.setInputProcessor(stage);
 
-        enemy = new Enemy(new Vector2(viewport.getWorldWidth() / 4 * 3, viewport.getWorldHeight() / 4 * 3), assets);
+        enemy = new Enemy(new Vector2(viewport.getWorldWidth() / 4 * 3, viewport.getWorldHeight() / 4 * 3), assets, 2);
         counter = 0;
     }
 

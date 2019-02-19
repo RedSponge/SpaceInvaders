@@ -1,5 +1,6 @@
 package com.redsponge.spaceinvaders.assets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -28,6 +29,10 @@ public class Assets implements Disposable {
         fonts.load(am);
         skins.load(am);
         shaders.load(am);
+    }
+
+    public void getResources() {
+        Gdx.app.log("Assets", "Loading!");
 
         am.finishLoading();
 
@@ -68,5 +73,13 @@ public class Assets implements Disposable {
         am.dispose();
         fonts.dispose();
         shaders.dispose();
+    }
+
+    public void finishLoading() {
+        am.finishLoading();
+    }
+
+    public void update() {
+        am.update();
     }
 }

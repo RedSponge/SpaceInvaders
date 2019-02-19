@@ -6,23 +6,21 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.redsponge.spaceinvaders.splashscreen.SplashScreenRenderer;
 import com.redsponge.spaceinvaders.transitions.TransitionFade;
-import com.redsponge.spaceinvaders.utilities.DependencyInjection;
 
 public class SplashScreenScreen extends AbstractScreen {
     private SplashScreenRenderer splashScreenRenderer;
     private ScalingViewport scalingViewport;
-    private boolean didTransition;
 
-    public SplashScreenScreen(DependencyInjection di, GameAccessor ga) {
-        super(di, ga);
+    public SplashScreenScreen(GameAccessor ga) {
+        super(ga);
     }
 
     @Override
     public void show() {
+        super.show();
         this.scalingViewport = new ScalingViewport(Scaling.fill, 1, 1);
         splashScreenRenderer = new SplashScreenRenderer(batch);
         splashScreenRenderer.begin();
-        didTransition = true;
     }
 
     @Override
@@ -38,7 +36,8 @@ public class SplashScreenScreen extends AbstractScreen {
         if(!splashScreenRenderer.isComplete()) {
             splashScreenRenderer.render();
         } else if(!transitioning) {
-            ga.transitionTo(new MenuScreen(di, ga), new TransitionFade(), 2);
+            assets.getResources();
+            ga.transitionTo(new MenuScreen(ga), new TransitionFade(), 2);
         }
     }
 

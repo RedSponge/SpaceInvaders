@@ -14,7 +14,7 @@ public class Sounds implements AssetLoader {
 
     @Override
     public void load(AssetManager am) {
-        Gdx.app.debug("Sounds", "Loading Sounds!");
+        Gdx.app.log("Sounds", "Loading Sounds!");
 
         this.am = am;
         this.am.load("sounds/shoot.wav", Sound.class);
@@ -24,7 +24,7 @@ public class Sounds implements AssetLoader {
 
     @Override
     public void getResources(AssetManager am) {
-        Gdx.app.debug("Sounds", "Retrieving Sounds!");
+        Gdx.app.log("Sounds", "Retrieving Sounds!");
 
         shoot = am.get("sounds/shoot.wav", Sound.class);
         enemyHit = am.get("sounds/hit.wav", Sound.class);

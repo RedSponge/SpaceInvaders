@@ -2,12 +2,11 @@ package com.redsponge.spaceinvaders.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.redsponge.spaceinvaders.utilities.DependencyInjection;
 
 public class OtherScreen extends AbstractScreen {
 
-    public OtherScreen(DependencyInjection di, GameAccessor ga) {
-        super(di, ga);
+    public OtherScreen(GameAccessor ga) {
+        super(ga);
     }
 
     @Override
